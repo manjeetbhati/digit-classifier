@@ -39,18 +39,17 @@ def vectorized_result(y):
 if __name__ == "__main__":
     np.random.seed(42)
 
-    layers = [784, 30, 10]
+    layers = [784, 30, 20, 10]
     learning_rate = 0.01
     mini_batch_size = 16
-    epochs = 100
+    epochs = 10
 
     # Initialize train, val and test data
     train_data, val_data, test_data = load_mnist()
-
     nn = NeuralNetwork(layers, learning_rate, mini_batch_size, "relu")
     nn.fit(train_data, val_data, epochs)
 
     accuracy = nn.validate(test_data) / 100.0
-    print(f"Test Accuracy: {accuracy}%.")
+    print("Test Accuracy: %s", str(accuracy))
 
     nn.save()

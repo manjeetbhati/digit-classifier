@@ -9,7 +9,7 @@ class NeuralNetwork(object):
 
     def __init__(
         self,
-        sizes=[784, 30, 10],
+        sizes=[784, 30, 20, 10],
         learning_rate=1e-2,
         mini_batch_size=16,
         activation_fn="relu"
@@ -40,7 +40,8 @@ class NeuralNetwork(object):
         self.sizes = sizes
         self.num_layers = len(sizes)
         self.activation_fn = getattr(activations, activation_fn)
-        self.activation_fn_prime = getattr(activations, f"{activation_fn}_prime")
+        act_prime = self.activation_fn.__name__ + "_prime"
+        self.activation_fn_prime = getattr(activations, act_prime)
 
         # First term corresponds to layer 0 (input layer). No weights enter the
         # input layer and hence self.weights[0] is redundant.
@@ -99,9 +100,9 @@ class NeuralNetwork(object):
 
             if validation_data:
                 accuracy = self.validate(validation_data) / 100.0
-                print(f"Epoch {epoch + 1}, accuracy {accuracy} %.")
+                print("Epoch %(epoc)s , accuracy %(accur)s" % {"epoc": str(epoch + 1), "accur": str(accuracy)})
             else:
-                print(f"Processed epoch {epoch}.")
+                print("Processed epoch %s.", epoch)
 
     def validate(self, validation_data):
         """Validate the Neural Network on provided validation data. It uses the
@@ -117,6 +118,16 @@ class NeuralNetwork(object):
             Number of correctly predicted images.
 
         """
+
+        for x, y in validation_data:
+            print("Image Number", y)
+            import time;time.sleep(.02)
+            prediction = self.predict(x)
+            if prediction == y:
+                 pass
+                  #print("AI prediction ", y)
+            else:
+                  print("wrong prediction", prediction)
         validation_results = [(self.predict(x) == y) for x, y in validation_data]
         return sum(result for result in validation_results)
 
